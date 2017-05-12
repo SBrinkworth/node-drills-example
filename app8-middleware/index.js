@@ -14,14 +14,25 @@ app.use(session({
   resave: true
 }));
 
-app.post('/login', function(req, res, next) {
+app.use(function(req, res, next) {
+  console.log('IM HERE GUYS!!!!!');
+  next();
+});
+
+function speakMid(req, res, next) {
+  console.log('IM HERE GUYS!!!!!');
+  next();
+}
+
+app.post('/login', speakMid, function(req, res, next) {
 	req.session.currentUser = req.body.username;
 	res.status(200).send('logged in');
-})
+});
 
-
-
-
+app.put('/logout', function(req, res) {
+  req.session.currentUser = null;
+  res.status(200).send('logged out');
+});
 
 app.listen(port, function() {
 	console.log('Listening on port',port);
